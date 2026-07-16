@@ -9,16 +9,13 @@ industries_snowflake:
       type: snowflake
       account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'SET_SNOWFLAKE_ACCOUNT_SECRET') }}"
       user: "{{ env_var('SNOWFLAKE_USER', 'SET_SNOWFLAKE_USER_SECRET') }}"
-{% if env_var('SNOWFLAKE_PRIVATE_KEY_PATH', '') %}
-      # Key-pair auth: sidesteps MFA-enforcement and PAT network-policy rules.
-      # Register the matching public key: ALTER USER <you> SET RSA_PUBLIC_KEY='...'
-      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
-{% else %}
-      password: "{{ env_var('SNOWFLAKE_PASSWORD', 'SET_SNOWFLAKE_PASSWORD_SECRET') }}"
-      # 'snowflake' = plain password (or PAT pasted as the password secret);
-      # 'username_password_mfa' = password + MFA push, with token caching.
-      authenticator: "{{ env_var('SNOWFLAKE_AUTHENTICATOR', 'snowflake') }}"
-{% endif %}
+      # Key-pair auth (the default here): sidesteps MFA enforcement and PAT
+      # network-policy rules. setup.sh generates the key; register the public
+      # half with: ALTER USER <you> SET RSA_PUBLIC_KEY='<from setup output>'
+      # (Note: profiles.yml can't use jinja {% if %} blocks — values only —
+      # so to fall back to password auth, swap this line for:
+      #   password: "{{ env_var('SNOWFLAKE_PASSWORD') }}")
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH', '/home/vscode/.snowflake/rsa_key.p8') }}"
       role: "{{ env_var('SNOWFLAKE_ROLE', 'PUBLIC') }}"
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
       database: "{{ env_var('SNOWFLAKE_DATABASE', 'SET_SNOWFLAKE_DATABASE_SECRET') }}"

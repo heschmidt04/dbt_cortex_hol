@@ -26,6 +26,16 @@ EOF
 done
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 
+echo "==> Ensuring Snowflake key pair exists (key-pair auth avoids MFA/PAT friction)"
+if [ ! -f "$HOME/.snowflake/rsa_key.p8" ]; then
+  mkdir -p "$HOME/.snowflake" && chmod 700 "$HOME/.snowflake"
+  openssl genrsa 2048 2>/dev/null | openssl pkcs8 -topk8 -inform PEM -out "$HOME/.snowflake/rsa_key.p8" -nocrypt
+  chmod 600 "$HOME/.snowflake/rsa_key.p8"
+  PUBKEY=$(openssl rsa -in "$HOME/.snowflake/rsa_key.p8" -pubout 2>/dev/null | grep -v 'PUBLIC KEY' | tr -d '\n')
+  echo "    NEW KEY GENERATED. Register it by running this in a Snowsight worksheet:"
+  echo "    ALTER USER <your_user> SET RSA_PUBLIC_KEY='$PUBKEY';"
+fi
+
 echo "==> Writing ~/.dbt/profiles.yml (values resolved from Codespaces secrets at runtime)"
 mkdir -p "$HOME/.dbt"
 cp "$REPO_ROOT/.devcontainer/profiles.yml.template" "$HOME/.dbt/profiles.yml"
