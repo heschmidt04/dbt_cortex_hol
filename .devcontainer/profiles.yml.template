@@ -14,4 +14,7 @@ industries_snowflake:
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
       database: "{{ env_var('SNOWFLAKE_DATABASE', 'SET_SNOWFLAKE_DATABASE_SECRET') }}"
       schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'LOCAL') }}"
+      # 'snowflake' = plain password (or PAT pasted as the password secret);
+      # 'username_password_mfa' = password + MFA push, with token caching.
+      authenticator: "{{ env_var('SNOWFLAKE_AUTHENTICATOR', 'snowflake') }}"
       threads: 4
