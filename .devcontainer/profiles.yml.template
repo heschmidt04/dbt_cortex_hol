@@ -21,3 +21,16 @@ industries_snowflake:
       database: "{{ env_var('SNOWFLAKE_DATABASE', 'SET_SNOWFLAKE_DATABASE_SECRET') }}"
       schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'LOCAL') }}"
       threads: 4
+    # Same connection as dev — exists so tools that parse against a prod
+    # target (e.g. dbt Wizard's deferral manifest) find one in this
+    # single-schema lab setup.
+    prod:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'SET_SNOWFLAKE_ACCOUNT_SECRET') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', 'SET_SNOWFLAKE_USER_SECRET') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH', '/home/vscode/.snowflake/rsa_key.p8') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'PUBLIC') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'SET_SNOWFLAKE_DATABASE_SECRET') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'LOCAL') }}"
+      threads: 4
