@@ -29,6 +29,15 @@ VS Code extension, and a ready-made `~/.dbt/profiles.yml` — no manual installs
    Secrets are injected as environment variables; `~/.dbt/profiles.yml` reads
    them with `env_var()`, so **no credential is ever written to the repo**.
 
+   > **Snowflake auth is key-pair, not password.** Accounts that enforce MFA
+   > reject plain password logins, and PATs demand a network policy. So
+   > `setup.sh` generates an RSA key at `~/.snowflake/rsa_key.p8` inside the
+   > codespace and prints an `ALTER USER … SET RSA_PUBLIC_KEY='…'` statement —
+   > run that once in a Snowsight worksheet and dbt connects with the key.
+   > `SNOWFLAKE_PASSWORD` is therefore optional. The key lives only inside the
+   > codespace: a new/rebuilt codespace means a new key and re-running the
+   > `ALTER USER` (setup prints it again).
+
 2. (Recommended) Fork <https://github.com/dbt-labs/snowflake_sko_hol_2026> —
    that's the actual dbt project you edit during local development (README
    section 1.2b). If your fork exists, the codespace clones it (pushable);
