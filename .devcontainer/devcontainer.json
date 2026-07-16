@@ -1,0 +1,40 @@
+{
+  "name": "dbt Snowflake HOL (dbt Wizard)",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "dbtLabsInc.dbt",
+        "snowflake.snowflake-vsc"
+      ]
+    }
+  },
+  "secrets": {
+    "SNOWFLAKE_ACCOUNT": {
+      "description": "Snowflake account locator for the HOL, e.g. ORGNAME-ACCOUNTNAME (from your connection info sheet)"
+    },
+    "SNOWFLAKE_USER": {
+      "description": "Your Snowflake username for the HOL"
+    },
+    "SNOWFLAKE_PASSWORD": {
+      "description": "Your Snowflake password for the HOL (never commit this anywhere)"
+    },
+    "SNOWFLAKE_ROLE": {
+      "description": "Snowflake role, e.g. SNOWFLAKE_INTELLIGENCE_ADMIN"
+    },
+    "SNOWFLAKE_WAREHOUSE": {
+      "description": "Snowflake warehouse to use (ask instructor if unsure)"
+    },
+    "SNOWFLAKE_DATABASE": {
+      "description": "Snowflake database, e.g. USER$YOURUSERNAME"
+    },
+    "SNOWFLAKE_SCHEMA": {
+      "description": "Snowflake schema, e.g. LOCAL"
+    }
+  }
+}

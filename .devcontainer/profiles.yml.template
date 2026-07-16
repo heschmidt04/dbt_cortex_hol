@@ -1,0 +1,17 @@
+# Copied to ~/.dbt/profiles.yml by .devcontainer/setup.sh
+# No secrets live in this file — every value is resolved from environment
+# variables at runtime (set them as GitHub Codespaces secrets).
+# Profile name matches dbt_project.yml in dbt-labs/snowflake_sko_hol_2026.
+industries_snowflake:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'SET_SNOWFLAKE_ACCOUNT_SECRET') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', 'SET_SNOWFLAKE_USER_SECRET') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD', 'SET_SNOWFLAKE_PASSWORD_SECRET') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'PUBLIC') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'SET_SNOWFLAKE_DATABASE_SECRET') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'LOCAL') }}"
+      threads: 4
